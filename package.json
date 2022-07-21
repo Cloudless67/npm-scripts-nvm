@@ -10,8 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:npm-scripts-nvm.npmScripts",
-    "workspaceContains:package.json"
+    "workspaceContains:./package.json"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -19,7 +18,8 @@
       "explorer": [
         {
           "id": "npm-scripts-nvm.npmScripts",
-          "name": "NPM Scripts"
+          "name": "NPM Scripts",
+          "when": "workspaceHasPackageJSON"
         }
       ]
     },

@@ -35,6 +35,12 @@ export function activate(context: vscode.ExtensionContext) {
     return scripts.join(" && ");
   };
 
+  vscode.commands.executeCommand(
+    "setContext",
+    "workspaceHasPackageJSON",
+    pathExists("package.json")
+  );
+
   vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
     treeDataProvider: new NpmScriptsProvider(rootPath),
   });
