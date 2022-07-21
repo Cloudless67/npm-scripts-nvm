@@ -6,6 +6,7 @@
   "engines": {
     "vscode": "^1.69.0"
   },
+  "publisher": "cloudlesslakitu",
   "categories": [
     "Other"
   ],
@@ -13,6 +14,10 @@
     "workspaceContains:./package.json"
   ],
   "main": "./out/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cloudless67/npm-scripts-nvm.git"
+  },
   "contributes": {
     "views": {
       "explorer": [

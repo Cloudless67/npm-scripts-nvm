@@ -8,7 +8,7 @@ import { readFileSync } from "fs";
 import * as path from "path";
 
 export class NpmScriptsProvider implements TreeDataProvider<Script> {
-  constructor(private workspaceRoot = "") {}
+  constructor(private workspaceRoot: string) {}
 
   getTreeItem(item: Script): TreeItem {
     return item;
