@@ -2,7 +2,7 @@
   "name": "npm-scripts-nvm",
   "displayName": "NPM Scripts NVM",
   "description": "Extension to run npm scripts with nvm",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.69.0"
   },
