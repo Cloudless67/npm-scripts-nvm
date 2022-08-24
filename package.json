@@ -2,7 +2,7 @@
   "name": "npm-scripts-nvm",
   "displayName": "NPM Scripts NVM",
   "description": "Extension to run npm scripts with nvm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.69.0"
   },
@@ -28,7 +28,7 @@
       "explorer": [
         {
           "id": "npm-scripts-nvm.npmScripts",
-          "name": "NPM Scripts",
+          "name": "NPM Scripts + NVM",
           "when": "workspaceHasPackageJSON"
         }
       ]
@@ -37,8 +37,25 @@
       {
         "command": "npm-scripts-nvm.runNpmScript",
         "title": "Run NPM script"
+      },
+      {
+        "command": "npm-scripts-nvm.refreshScripts",
+        "title": "Refresh NPM Scripts",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "npm-scripts-nvm.refreshScripts",
+          "when": "view == npm-scripts-nvm.npmScripts",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "icon": "resources/icon.png",
   "scripts": {

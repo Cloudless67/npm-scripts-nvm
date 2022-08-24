@@ -3,12 +3,21 @@ import {
   TreeItem,
   TreeItemCollapsibleState,
   ThemeIcon,
+  EventEmitter,
+  Event,
 } from "vscode";
 import { readFileSync } from "fs";
 import * as path from "path";
 
 export class NpmScriptsProvider implements TreeDataProvider<Script> {
+  private _onDidChangeTreeData = new EventEmitter<Script | undefined | void>();
+  readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
+
   constructor(private workspaceRoot: string) {}
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
 
   getTreeItem(item: Script): TreeItem {
     return item;

@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
-import { accessSync } from "fs";
 import { NpmScriptsProvider } from "./NpmScriptsProvider";
-import * as path from "path";
+import { buildScriptText, pathExists } from "./utils";
 
 export function activate(context: vscode.ExtensionContext) {
   const rootPath =
@@ -10,51 +9,33 @@ export function activate(context: vscode.ExtensionContext) {
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : "";
 
-  const pathExists = (p: string) => {
-    try {
-      accessSync(path.join(rootPath, p));
-    } catch {
-      return false;
-    }
-    return true;
-  };
-
-  const buildScriptText = (script: string) => {
-    const scripts = [];
-
-    if (pathExists(".nvmrc")) {
-      scripts.push("nvm use");
-    }
-
-    if (pathExists("yarn.lock")) {
-      scripts.push(`yarn ${script}`);
-    } else {
-      scripts.push(`npm run ${script}`);
-    }
-
-    return scripts.join(" && ");
-  };
-
   vscode.commands.executeCommand(
     "setContext",
     "workspaceHasPackageJSON",
-    pathExists("package.json")
+    pathExists("package.json", rootPath)
   );
 
-  vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
-    treeDataProvider: new NpmScriptsProvider(rootPath),
-  });
+  const npmScriptsProvider = new NpmScriptsProvider(rootPath);
 
-  const commandHandler = (script: string) => {
-    const terminal = vscode.window.createTerminal(script);
-    terminal.show();
-    terminal.sendText(buildScriptText(script));
-  };
+  vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
+    treeDataProvider: npmScriptsProvider,
+  });
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "npm-scripts-nvm.runNpmScript",
-      commandHandler
+      (script: string) => {
+        const terminal = vscode.window.createTerminal(script);
+        terminal.show();
+        terminal.sendText(buildScriptText(script, rootPath));
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "npm-scripts-nvm.refreshScripts",
+      npmScriptsProvider.refresh.bind(npmScriptsProvider)
     )
   );
 }
