@@ -28,7 +28,7 @@
       "explorer": [
         {
           "id": "npm-scripts-nvm.npmScripts",
-          "name": "NPM Scripts",
+          "name": "NPM Scripts + NVM",
           "when": "workspaceHasPackageJSON"
         }
       ]
