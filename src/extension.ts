@@ -41,20 +41,27 @@ export function activate(context: vscode.ExtensionContext) {
     pathExists("package.json")
   );
 
-  vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
-    treeDataProvider: new NpmScriptsProvider(rootPath),
-  });
+  const npmScriptsProvider = new NpmScriptsProvider(rootPath);
 
-  const commandHandler = (script: string) => {
-    const terminal = vscode.window.createTerminal(script);
-    terminal.show();
-    terminal.sendText(buildScriptText(script));
-  };
+  vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
+    treeDataProvider: npmScriptsProvider,
+  });
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "npm-scripts-nvm.runNpmScript",
-      commandHandler
+      (script: string) => {
+        const terminal = vscode.window.createTerminal(script);
+        terminal.show();
+        terminal.sendText(buildScriptText(script));
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "npm-scripts-nvm.refreshScripts",
+      npmScriptsProvider.refresh.bind(npmScriptsProvider)
     )
   );
 }
