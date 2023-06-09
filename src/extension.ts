@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     pathExists("package.json", rootPath)
   );
 
-  const npmScriptsProvider = new NpmScriptsProvider(rootPath);
+  const npmScriptsProvider = new NpmScriptsProvider(vscode.workspace.workspaceFolders);
 
   vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
     treeDataProvider: npmScriptsProvider,
