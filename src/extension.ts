@@ -25,12 +25,17 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "npm-scripts-nvm.runNpmScript",
       (rootPath, script) => {
-        const terminal = vscode.window.createTerminal({
-          name: script,
-          cwd: rootPath
-        });
-        terminal.show();
-        terminal.sendText(buildScriptText(script, rootPath));
+        vscode.tasks.executeTask(
+          new vscode.Task(
+            { type: "shell" },
+            vscode.TaskScope.Global,
+            script,
+            'npm',
+            new vscode.ShellExecution(buildScriptText(script, rootPath), {
+              cwd: rootPath,
+            })
+          )
+        );
       }
     )
   );

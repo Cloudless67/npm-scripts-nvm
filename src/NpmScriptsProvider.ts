@@ -25,7 +25,7 @@ export class NpmScriptsProvider implements TreeDataProvider<TreeItem> {
 
   getChildren(item?: TreeItem): TreeItem[] {
     if(item) {
-      return this.getScripts(item.label as string)
+      return this.getScripts(item.label as string);
     } else {
       const projects = this.getProjects();
       return projects.length === 1
@@ -44,7 +44,9 @@ export class NpmScriptsProvider implements TreeDataProvider<TreeItem> {
   private getScripts(folderName: string): Script[] {
     return (
       this.workspaceFolders?.reduce<Script[]>((scripts, workspaceRoot) => {
-        if (folderName !== workspaceRoot.name) return scripts;
+        if (folderName !== workspaceRoot.name) {
+          return scripts;
+        }
         const packageJsonPath = path.join(
           workspaceRoot.uri.fsPath,
           "package.json"
