@@ -11,7 +11,7 @@ export const pathExists = (p: string, rootPath: string) => {
 };
 
 export const buildScriptText = (script: string, rootPath: string) => {
-  const scripts = [];
+  const scripts = ["source ~/.zshrc"];
 
   if (pathExists(".nvmrc", rootPath)) {
     scripts.push("nvm use");

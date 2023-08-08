@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     pathExists("package.json", rootPath)
   );
 
-  const npmScriptsProvider = new NpmScriptsProvider(rootPath);
+  const npmScriptsProvider = new NpmScriptsProvider(vscode.workspace.workspaceFolders);
 
   vscode.window.createTreeView("npm-scripts-nvm.npmScripts", {
     treeDataProvider: npmScriptsProvider,
@@ -24,10 +24,18 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "npm-scripts-nvm.runNpmScript",
-      (script: string) => {
-        const terminal = vscode.window.createTerminal(script);
-        terminal.show();
-        terminal.sendText(buildScriptText(script, rootPath));
+      (rootPath, script) => {
+        vscode.tasks.executeTask(
+          new vscode.Task(
+            { type: "shell" },
+            vscode.TaskScope.Global,
+            script,
+            'npm',
+            new vscode.ShellExecution(buildScriptText(script, rootPath), {
+              cwd: rootPath,
+            })
+          )
+        );
       }
     )
   );
