@@ -19,6 +19,8 @@ export const buildScriptText = (script: string, rootPath: string) => {
 
   if (pathExists("yarn.lock", rootPath)) {
     scripts.push(`yarn ${script}`);
+  } else if (pathExists("pnpm-lock.yaml", rootPath)) {
+    scripts.push(`pnpm run ${script}`);
   } else {
     scripts.push(`npm run ${script}`);
   }
